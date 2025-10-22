@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard Projects</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Dashboard Projects</h1>
+    </header>
+
+    <section class="projects-section">
+        <h2>Liste des projets</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Status</th>
+                    <th>Début</th>
+                    <th>Fin</th>
+                    <th>Responsable</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in projects %}
+                <tr>
+                    <td>{{ p.name }}</td>
+                    <td>{{ p.status }}</td>
+                    <td>{{ p.start_date }}</td>
+                    <td>{{ p.end_date }}</td>
+                    <td>{{ p.owner }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+
+    <section class="add-project-section">
+        <h2>Ajouter un projet</h2>
+        <form action="/add" method="POST">
+            <label for="name">Nom du projet:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="status">Statut:</label>
+            <select id="status" name="status">
+                <option value="En cours">En cours</option>
+                <option value="Terminé">Terminé</option>
+                <option value="En attente">En attente</option>
+            </select>
+
+            <label for="start_date">Date de début:</label>
+            <input type="date" id="start_date" name="start_date" required>
+
+            <label for="end_date">Date de fin:</label>
+            <input type="date" id="end_date" name="end_date" required>
+
+            <label for="owner">Responsable:</label>
+            <input type="text" id="owner" name="owner" required>
+
+            <button type="submit">Ajouter</button>
+        </form>
+    </section>
+
+    <section class="stats-section">
+        <h2>Statistiques des projets</h2>
+        <canvas id="statusChart"></canvas>
+    </section>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

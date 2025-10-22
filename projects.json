@@ -1,0 +1,13 @@
+[
+    {"name":"Projet A","status":"En cours","start_date":"2025-10-01","end_date":"2025-12-01","owner":"Alice"},
+    {"name":"Projet B","status":"Terminé","start_date":"2025-08-01","end_date":"2025-09-15","owner":"Bob"},
+    {"name":"Projet C","status":"En attente","start_date":"2025-10-15","end_date":"2026-01-01","owner":"Charlie"},
+    {"name":"Projet D","status":"En cours","start_date":"2025-09-20","end_date":"2025-11-30","owner":"David"},
+    {"name":"Projet E","status":"Terminé","start_date":"2025-07-10","end_date":"2025-08-25","owner":"Emma"},
+    {"name":"Projet F","status":"En attente","start_date":"2025-11-01","end_date":"2026-02-01","owner":"François"},
+    {"name":"Projet G","status":"En cours","start_date":"2025-10-05","end_date":"2025-12-20","owner":"Gabriel"},
+    {"name":"Projet H","status":"Terminé","start_date":"2025-06-01","end_date":"2025-07-15","owner":"Hélène"},
+    {"name":"Projet I","status":"En attente","start_date":"2025-11-10","end_date":"2026-03-01","owner":"Isabelle"},
+    {"name":"Projet J","status":"En cours","start_date":"2025-10-12","end_date":"2025-12-25","owner":"Julien"}
+]
+
