@@ -1,73 +1,102 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <title>Dashboard Projects</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard Projets</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
 </head>
 <body>
-    <header>
-        <h1>Dashboard Projects</h1>
-    </header>
+  <header>
+    <h1>Grafen – Project Tracker</h1>
+  </header>
 
-    <section class="projects-section">
-        <h2>Liste des projets</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Nom</th>
-                    <th>Status</th>
-                    <th>Début</th>
-                    <th>Fin</th>
-                    <th>Responsable</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for p in projects %}
-                <tr>
-                    <td>{{ p.name }}</td>
-                    <td>{{ p.status }}</td>
-                    <td>{{ p.start_date }}</td>
-                    <td>{{ p.end_date }}</td>
-                    <td>{{ p.owner }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </section>
+  <!-- Statistiques -->
+  <section id="stats">
+    <div class="stat">
+      <h2>Tous les projets</h2>
+      <p id="total-count">0</p>
+    </div>
+    <div class="stat"><h2>En cours</h2><p id="en-cours-count">0</p></div>
+    <div class="stat"><h2>Terminés</h2><p id="termine-count">0</p></div>
+    <div class="stat"><h2>En attente</h2><p id="attente-count">0</p></div>
+    <div class="stat"><h2>Retardés</h2><p id="retarde-count">0</p></div>
+  </section>
 
-    <section class="add-project-section">
-        <h2>Ajouter un projet</h2>
-        <form action="/add" method="POST">
-            <label for="name">Nom du projet:</label>
-            <input type="text" id="name" name="name" required>
+  <!-- Filtres -->
+  <section id="filters">
+    <label for="statusFilter">Filtrer par statut :</label>
+    <select id="statusFilter">
+      <option value="Tous">Tous</option>
+      <option value="En cours">En cours</option>
+      <option value="Terminé">Terminé</option>
+      <option value="En attente">En attente</option>
+      <option value="Retardé">Retardé</option>
+    </select>
+  </section>
 
-            <label for="status">Statut:</label>
-            <select id="status" name="status">
-                <option value="En cours">En cours</option>
-                <option value="Terminé">Terminé</option>
-                <option value="En attente">En attente</option>
-            </select>
+  <!-- Formulaire d'ajout -->
+  <section id="add-project">
+    <h2>Ajouter un projet</h2>
+    <form action="{{ url_for('add_project') }}" method="POST">
+      <label>Client :</label>
+      <input type="text" name="owner" required />
 
-            <label for="start_date">Date de début:</label>
-            <input type="date" id="start_date" name="start_date" required>
+      <label>Nom du projet :</label>
+      <input type="text" name="name" required />
 
-            <label for="end_date">Date de fin:</label>
-            <input type="date" id="end_date" name="end_date" required>
+      <label>Statut :</label>
+      <select name="status">
+        <option value="En cours">En cours</option>
+        <option value="Terminé">Terminé</option>
+        <option value="En attente">En attente</option>
+        <option value="Retardé">Retardé</option>
+      </select>
 
-            <label for="owner">Responsable:</label>
-            <input type="text" id="owner" name="owner" required>
+      <label>Date de début :</label>
+      <input type="date" name="start_date" required />
 
-            <button type="submit">Ajouter</button>
-        </form>
-    </section>
+      <label>Date de fin :</label>
+      <input type="date" name="end_date" required />
 
-    <section class="stats-section">
-        <h2>Statistiques des projets</h2>
-        <canvas id="statusChart"></canvas>
-    </section>
+      <label>Équipe (nombre de personnes) :</label>
+      <input type="number" name="team" required />
 
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
+      <label>Progression (%) :</label>
+      <input type="number" name="progress" min="0" max="100" value="0" required />
+
+      <button type="submit">Ajouter le projet</button>
+    </form>
+  </section>
+
+  <!-- Liste des projets -->
+  <section id="projects" class="project-grid">
+    {% for project in projects %}
+    <div class="card" data-status="{{ project.status }}">
+      <h3>{{ project.owner }}</h3>
+      <p class="title">{{ project.name }}</p>
+      <p><strong>Statut :</strong> {{ project.status }}</p>
+      <div class="progress-bar">
+        <div style="width: {{ project.progress }}%;"></div>
+      </div>
+      <p><strong>Progression :</strong> {{ project.progress }}%</p>
+      <p><strong>Échéance :</strong> {{ project.end_date }}</p>
+      <p><strong>Équipe :</strong> {{ project.team }}</p>
+
+      <!-- 🔹 Bouton pour modifier -->
+      <form action="{{ url_for('edit_project', index=loop.index0) }}" method="GET">
+        <button type="submit">✏️ Modifier</button>
+      </form>
+      <form action="{{ url_for('delete_project', index=loop.index0) }}" method="POST" style="display:inline;">
+  <button type="submit" class="delete-btn" onclick="return confirm('Voulez-vous vraiment supprimer ce projet ?')">
+    🗑️ Supprimer
+  </button>
+</form>
+
+    </div>
+    {% endfor %}
+  </section>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
